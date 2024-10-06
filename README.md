@@ -2,12 +2,12 @@
 
 `Install-Package MST.Nlog -Version 1.0.0`
 
-###Program.cs
+### Program.cs
 `
 builder.Services.AddTransient(typeof(Mst.Logging.Logger.ILogger<>),
                               typeof(Mst.Nlog.NLogAdapter<>));`
 
-###Add file nlog.config
+### Add file nlog.config
 
 ``
 <?xml version="1.0" encoding="utf-8" ?>
@@ -74,7 +74,7 @@ builder.Services.AddTransient(typeof(Mst.Logging.Logger.ILogger<>),
 </nlog>
 ``
 
-###How use controller
+### How use controller
 
 `using Microsoft.AspNetCore.Mvc;
 using System.Collections;
