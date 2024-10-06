@@ -13,11 +13,11 @@
     <Copyright>2024</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://mehransattary.ir/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mehransattari/Mst.Logging</RepositoryUrl>
+    <RepositoryUrl>https://github.com/mehransattari/Mst.Nlog</RepositoryUrl>
     <Description>Mehran Sattari Framework</Description>
-    <PackageTags>Base Logging</PackageTags>
+    <PackageTags>Nlog</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <PackageIcon>Mst.png</PackageIcon>
     <PackageIconUrl />
     <PackageReleaseNotes>Nlog</PackageReleaseNotes>
