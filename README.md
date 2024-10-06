@@ -3,80 +3,68 @@
 `Install-Package MST.Nlog -Version 1.0.0`
 
 ### Program.cs
-`
+```
 builder.Services.AddTransient(typeof(Mst.Logging.Logger.ILogger<>),
-                              typeof(Mst.Nlog.NLogAdapter<>));`
+typeof(Mst.Nlog.NLogAdapter<>));
+```
+                             
+
 
 ### Add file nlog.config
+```
+<?xml version="1.0" encoding="utf-8" ?>  
+<nlog  
+    xmlns="http://www.nlog-project.org/schemas/NLog.xsd"  
+    xsi:schemaLocation="NLog NLog.xsd"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    autoReload="true"  
+    internalLogFile="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsNLog.log"  
+    internalLogLevel="Trace">  
 
-``
-<?xml version="1.0" encoding="utf-8" ?>
-<nlog
-	xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
-	xsi:schemaLocation="NLog NLog.xsd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	autoReload="true"
-	internalLogFile="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsNLog.log"
-	internalLogLevel="Trace"
-	>
+    <targets>  
+        <target xsi:type="File" name="LogFatalToFile"  
+            fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsFatalMessages.log"  
+            layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"  
+            keepFileOpen="true"  
+            archiveEvery="Minute"  
+            archiveNumbering="DateAndSequence" />  
 
-	<targets>
-		<target xsi:type="File" name="LogFatalToFile"
-			fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsFatalMessages.log"
-			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
+        <target xsi:type="File" name="LogErrorToFile"  
+            fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsErrorMessages.log"  
+            layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" />  
 
-			keepFileOpen="true"
-			archiveEvery="Minute"
-			archiveNumbering="DateAndSequence"
-			/>
+        <target xsi:type="File" name="LogWarningToFile"  
+            fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsWarningMessages.log"  
+            layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" />  
 
-		<target xsi:type="File" name="LogErrorToFile"
-			fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsErrorMessages.log"
-			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
-			/>
+        <!-- Temp File -->  
+        <target xsi:type="File" name="TempFile"  
+            fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsTemp.log"  
+            layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" />  
 
-		<target xsi:type="File" name="LogWarningToFile"
-			fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsWarningMessages.log"
-			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
-			/>
+        <target xsi:type="Console" name="LogToConsole"  
+            layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" />  
+    </targets>  
 
-		<!--TempFile-->
-		<target xsi:type="File" name="TempFile"
-			fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsTemp.log"
-			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
-			/>
+    <rules>  
+        <!-- Skip non-critical Microsoft logs, log only own logs -->  
+        <logger name="Microsoft.*" maxlevel="Info" final="true" />  
 
-		<target xsi:type="Console" name="LogToConsole"
-			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
-			/>
-	</targets>
-
-	<rules>
-		<!--Skip non-critical Microsoft logs and so log only own logs-->
-		<!-- BlackHole without writeTo -->
-		<logger name="Microsoft.*" maxlevel="Info" final="true" />
-    <!--
-    Trace
-    Debug
-    Info
-    Warn
-    Error
-    Fatal
-    -->
-    <logger name="*" minlevel="Fatal" maxlevel="Fatal" writeTo="LogFatalToFile" />
-		<logger name="*" level="Error" writeTo="LogErrorToFile" />
-		<logger name="*" level="Warn" writeTo="LogWarningToFile" />
-    
-		<logger name="*" minlevel="Trace" maxlevel="Info" writeTo="LogToConsole" />
-
-		<logger name="Application.Program" minlevel="Trace" maxlevel="Fatal" writeTo="TempFile" />
-	</rules>
+        <!-- Logging Rules -->  
+        <logger name="*" minlevel="Fatal" maxlevel="Fatal" writeTo="LogFatalToFile" />  
+        <logger name="*" level="Error" writeTo="LogErrorToFile" />  
+        <logger name="*" level="Warn" writeTo="LogWarningToFile" />  
+        <logger name="*" minlevel="Trace" maxlevel="Info" writeTo="LogToConsole" />  
+        <logger name="Application.Program" minlevel="Trace" maxlevel="Fatal" writeTo="TempFile" />  
+    </rules>  
 </nlog>
-``
+```
 
-### How use controller
 
-`using Microsoft.AspNetCore.Mvc;
+###How use controller
+
+```
+using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 
 namespace Log_Sample.Api.Controllers;
@@ -116,4 +104,6 @@ public class TestController : ControllerBase
         return Ok(value: message);
     }
 
-}`
+}
+
+```
