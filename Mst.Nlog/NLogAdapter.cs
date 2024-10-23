@@ -11,9 +11,7 @@ public class NLogAdapter<T> : Logger<T>
         :base(httpContextAccessor)
     {
             
-    }
-
- 
+    } 
 
     protected override void LogByFavoriteLibrary(Log log, Exception exception)
     {
