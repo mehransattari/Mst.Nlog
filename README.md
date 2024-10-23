@@ -12,16 +12,32 @@ typeof(Mst.Nlog.NLogAdapter<>));
 
 ### Add file nlog.config
 ```
-<?xml version="1.0" encoding="utf-8" ?>  
-<nlog  
-    xmlns="http://www.nlog-project.org/schemas/NLog.xsd"  
-    xsi:schemaLocation="NLog NLog.xsd"  
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-    autoReload="true"  
-    internalLogFile="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsNLog.log"  
-    internalLogLevel="Trace">  
+<?xml version="1.0" encoding="utf-8" ?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      autoReload="true"
+      internalLogLevel="Warn"
+      internalLogFile="internal-nlog.txt">
 
-    <targets>  
+  <!-- تنظیمات کلی لاگ‌ها -->
+  <targets>
+
+    <!-- مقصد لاگ‌ها: دیتابیس SQL Server -->
+    <target xsi:type="Database" 
+            name="database"
+            connectionString="Server=YOUR_SERVER_NAME;Database=YOUR_DATABASE_NAME;Integrated Security=True;"
+            commandText="INSERT INTO LogEntries (Timestamp, Level, Message, Logger, Exception) VALUES (@time_stamp, @level, @message, @logger, @exception)">
+
+      <parameter name="@time_stamp" layout="${longdate}" />
+      <parameter name="@level" layout="${level}" />
+      <parameter name="@message" layout="${message}" />
+      <parameter name="@logger" layout="${logger}" />
+      <parameter name="@exception" layout="${exception:format=tostring}" />
+
+    </target>
+
+  
+        <!-- LogFatalToFile  -->
         <target xsi:type="File" name="LogFatalToFile"  
             fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsFatalMessages.log"  
             layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"  
@@ -29,35 +45,52 @@ typeof(Mst.Nlog.NLogAdapter<>));
             archiveEvery="Minute"  
             archiveNumbering="DateAndSequence" />  
 
+
+        <!-- LogErrorToFile  -->
         <target xsi:type="File" name="LogErrorToFile"  
             fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsErrorMessages.log"  
             layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" />  
 
+
+        <!-- LogWarningToFile  -->
         <target xsi:type="File" name="LogWarningToFile"  
             fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsWarningMessages.log"  
             layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" />  
+
 
         <!-- Temp File -->  
         <target xsi:type="File" name="TempFile"  
             fileName="C:\Users\mehran\source\repos\Log_Sample\Log_Sample.Api.Mst\logs\logsTemp.log"  
             layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" />  
 
+
         <target xsi:type="Console" name="LogToConsole"  
-            layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" />  
-    </targets>  
+            layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}" /> 
 
-    <rules>  
-        <!-- Skip non-critical Microsoft logs, log only own logs -->  
-        <logger name="Microsoft.*" maxlevel="Info" final="true" />  
+  </targets>
 
-        <!-- Logging Rules -->  
+  <!-- قوانین لاگ‌گیری -->
+  <rules>
+
+
+        <!-- ذخیره همه لاگ‌ها در دیتابیس -->
+             <logger name="*" minlevel="Error" maxlevel="Fatal" writeTo="database" />  
+
         <logger name="*" minlevel="Fatal" maxlevel="Fatal" writeTo="LogFatalToFile" />  
+
         <logger name="*" level="Error" writeTo="LogErrorToFile" />  
+
         <logger name="*" level="Warn" writeTo="LogWarningToFile" />  
+
         <logger name="*" minlevel="Trace" maxlevel="Info" writeTo="LogToConsole" />  
+
         <logger name="Application.Program" minlevel="Trace" maxlevel="Fatal" writeTo="TempFile" />  
-    </rules>  
+
+
+  </rules>
+
 </nlog>
+
 ```
 
 
