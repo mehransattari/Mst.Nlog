@@ -38,7 +38,7 @@ public class LogEntry
 	internalLogLevel="Trace"
 	>
 
-	<targets>
+  <targets>
 
     <target xsi:type="Database" name="database"
         connectionString="Server=DESKTOP-AAOIHBN;Database=Test10Db;Trusted_Connection=True;MultipleActiveResultSets=true"
@@ -49,9 +49,9 @@ public class LogEntry
       <parameter name="@message" layout="${message}" />
       <parameter name="@exception" layout="${exception:format=tostring}" />
     </target>
- 
-    
-		<target xsi:type="File" name="LogFatalToFile"
+
+
+    <target xsi:type="File" name="LogFatalToFile"
 			fileName="C:\Users\mehran\source\repos\LogNet\LogNet\wwwroot\logs\logsFatalMessages.log"
 			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
 
@@ -60,30 +60,30 @@ public class LogEntry
 			archiveNumbering="DateAndSequence"
 			/>
 
-		<target xsi:type="File" name="LogErrorToFile"
+    <target xsi:type="File" name="LogErrorToFile"
 			fileName="C:\Users\mehran\source\repos\LogNet\LogNet\wwwroot\logs\logsErrorMessages.log"
 			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
 			/>
 
-		<target xsi:type="File" name="LogWarningToFile"
+    <target xsi:type="File" name="LogWarningToFile"
 			fileName="C:\Users\mehran\source\repos\LogNet\LogNet\wwwroot\logs\logsWarningMessages.log"
 			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
 			/>
 
-		<!--TempFile-->
-		<target xsi:type="File" name="TempFile"
+    <!--TempFile-->
+    <target xsi:type="File" name="TempFile"
 			fileName="C:\Users\mehran\source\repos\LogNet\LogNet\wwwroot\logs\logsTemp.log"
 			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
 			/>
 
-		<target xsi:type="Console" name="LogToConsole"
+    <target xsi:type="Console" name="LogToConsole"
 			layout="${longdate}|${level:uppercase=true}|${logger}|${message}|${all-event-properties} ${exception:format=tostring}"
 			/>
-	</targets>
+  </targets>
 
-	<rules>
-		<!-- BlackHole without writeTo -->
-		<logger name="Microsoft.*" maxlevel="Info" final="true" />
+  <rules>
+    <!-- BlackHole without writeTo -->
+    <logger name="Microsoft.*" maxlevel="Info" final="true" />
     <!--
     Trace
     Debug
@@ -93,17 +93,18 @@ public class LogEntry
     Fatal
     -->
     <logger name="*" minlevel="Fatal" maxlevel="Fatal" writeTo="LogFatalToFile" />
-		<logger name="*" level="Error" writeTo="LogErrorToFile" />
-		<logger name="*" level="Warn" writeTo="LogWarningToFile" />
-    
-		<logger name="*" minlevel="Trace" maxlevel="Info" writeTo="LogToConsole" />
+    <logger name="*" level="Error" writeTo="LogErrorToFile" />
+    <logger name="*" level="Warn" writeTo="LogWarningToFile" />
 
-		<logger name="Application.Program" minlevel="Trace" maxlevel="Fatal" writeTo="TempFile" />
+    <logger name="*" minlevel="Trace" maxlevel="Info" writeTo="LogToConsole" />
+
+    <logger name="Application.Program" minlevel="Trace" maxlevel="Fatal" writeTo="TempFile" />
 
     <logger name="*" minlevel="Trace" writeTo="database" />
 
   </rules>
 </nlog>
+
 
 
 ```
