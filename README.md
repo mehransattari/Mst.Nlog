@@ -4,7 +4,7 @@
 
 ### Program.cs
 ```
-builder.Services.AddTransient(typeof(Mst.Logging.Logger.ILogger<>),
+builder.Services.AddTransient(typeof(Mst.ILogger<>),
 typeof(Mst.Nlog.NLogAdapter<>));
 ```
                              
