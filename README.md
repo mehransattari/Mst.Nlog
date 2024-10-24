@@ -8,7 +8,23 @@ builder.Services.AddTransient(typeof(Mst.Logging.Logger.ILogger<>),
 typeof(Mst.Nlog.NLogAdapter<>));
 ```
                              
+### Insert Log In Database
+```
+public class LogEntry
+{
+    public int Id { get; set; } // Primary Key
 
+    public DateTime LogDate { get; set; }
+
+    public string Level { get; set; }
+
+    public string Logger { get; set; }
+
+    public string Message { get; set; }
+
+    public string Exception { get; set; }
+}
+```
 
 ### Add file nlog.config
 ```
