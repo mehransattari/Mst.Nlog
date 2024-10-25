@@ -1,6 +1,6 @@
 ### Install package
 
-`Install-Package MST.Nlog -Version 1.0.0`
+`Install-Package MST.Nlog -Version 1.0.4`
 
 ### Program.cs
 ```
