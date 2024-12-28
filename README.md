@@ -128,7 +128,7 @@ public class TestController : ControllerBase
         Logger = logger;
     }
 
-    protected Mst.Logging.Logger.ILogger<TestController> Logger { get; }
+    protected Mst.ILogger<TestController> Logger { get; }
 
     [HttpGet]
     public IActionResult Get()
